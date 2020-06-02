@@ -9,5 +9,5 @@ export const charSets = {
 export default (text: string, to: keyof typeof charSets) =>
     text
         .split('')
-        .map(char => charSets[to][referenceCharSet.indexOf(char)] ?? char)
+        .map(char => charSets[to][referenceCharSet.indexOf(char)] || char)
         .join('');
