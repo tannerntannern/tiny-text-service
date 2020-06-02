@@ -6,3 +6,10 @@ export const handler = (type: keyof typeof charSets) =>
     res.send(
       convert(req.query.q as string, type),
     );
+
+export const slackHandler = (type: keyof typeof charSets) =>
+  (req: NowRequest, res: NowResponse) =>
+    res.json({
+      response_type: 'in_channel',
+      text: convert(req.query.text as string, type),
+    });
