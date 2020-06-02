@@ -1,0 +1,14 @@
+{
+  "name": "tiny-text-service",
+  "version": "1.0.0",
+  "description": "Tiny text generation as a service",
+  "main": "index.js",
+  "repository": "https://github.com/tannerntannern/tiny-text-service.git",
+  "author": "Tanner Nielsen",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@now/node": "^1.6.1",
+    "typescript": "^3.9.3"
+  }
+}
