@@ -29,10 +29,8 @@ export const slackHandler = (type: keyof typeof charSets) =>
       as_user: true,
     };
 
-    console.log(`Posting "${convertedText}" to slack...`);
-    console.log(`Channel ID: ${payload.channel_id}`);
-    console.log(`Oauth token: ${slackBotUserOauthToken.slice(0, 10)}...`)
-    await axios.post('https://slack.com/api/chat.postMessage', body, { headers });
+    const response = await axios.post('https://slack.com/api/chat.postMessage', body, { headers });
+    console.log(JSON.stringify(response.data));
 
     res.status(200).send('');
   }
