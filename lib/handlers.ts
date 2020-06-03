@@ -32,7 +32,10 @@ export const slackHandler = (type: keyof typeof charSets) =>
     const response = await axios.post<PostMessageResponse>('https://slack.com/api/chat.postMessage', body, { headers });
     if (!response.data.ok) {
       console.log(JSON.stringify(response.data));
-      res.status(500).json(response.data);
+      res.status(500).json({
+        response_type: 'ephemeral',
+        text: response.data.error,
+      });
     } else {
       res.status(200).send('');
     }
@@ -48,4 +51,5 @@ type SlashCommandPayload = {
 
 type PostMessageResponse = {
   ok: boolean,
+  error?: string,
 } & { [x: string]: any };
