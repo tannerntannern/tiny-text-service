@@ -29,8 +29,9 @@ export const slackHandler = (type: keyof typeof charSets) =>
       as_user: true,
     };
 
-    console.log(`Posting "${convertedText}" to slack...`)
-    await axios.post('https://slack.com/api/chat.postMessage', body, { headers })
+    console.log(`Posting "${convertedText}" to slack...`);
+    console.log(`Channel ID: ${payload.channel_id}`);
+    await axios.post('https://slack.com/api/chat.postMessage', body, { headers });
 
     res.status(200).send('');
   }
