@@ -15,7 +15,7 @@ export const handler = (type: keyof typeof charSets) =>
 
 export const slackHandler = (type: keyof typeof charSets) =>
   async (req: NowRequest, res: NowResponse) => {
-    const payload = parse(await text(req)) as SlackPayload;
+    const payload = parse(await text(req)) as SlashCommandPayload;
     const convertedText = convert(payload.text as string, type);
 
     const headers = {
@@ -26,19 +26,26 @@ export const slackHandler = (type: keyof typeof charSets) =>
     const body = {
       channel: payload.channel_id,
       text: convertedText,
-      as_user: true,
+      as_user: false,
     };
 
-    const response = await axios.post('https://slack.com/api/chat.postMessage', body, { headers });
-    console.log(JSON.stringify(response.data));
-
-    res.status(200).send('');
+    const response = await axios.post<PostMessageResponse>('https://slack.com/api/chat.postMessage', body, { headers });
+    if (!response.data.ok) {
+      console.log(JSON.stringify(response.data));
+      res.status(500).json(response.data);
+    } else {
+      res.status(200).send('');
+    }
   }
 
 // https://api.slack.com/interactivity/slash-commands#app_command_handling
-type SlackPayload = {
+type SlashCommandPayload = {
   command: string,
   text: string,
   user_name: string,
   channel_id: string,
 };
+
+type PostMessageResponse = {
+  ok: boolean,
+} & { [x: string]: any };
