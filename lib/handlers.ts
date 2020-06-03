@@ -1,4 +1,7 @@
 import { NowRequest, NowResponse } from '@now/node';
+import { text } from 'micro';
+import { parse } from 'querystring';
+
 import convert, { charSets } from './convert';
 
 export const handler = (type: keyof typeof charSets) =>
@@ -8,8 +11,11 @@ export const handler = (type: keyof typeof charSets) =>
     );
 
 export const slackHandler = (type: keyof typeof charSets) =>
-  (req: NowRequest, res: NowResponse) =>
+  async (req: NowRequest, res: NowResponse) =>
     res.json({
       response_type: 'in_channel',
-      text: convert(req.query.text as string, type),
+      text: convert(
+        parse(await text(req)).text as string,
+        type,
+      ),
     });

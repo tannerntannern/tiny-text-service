@@ -6,8 +6,13 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "micro": "^9.3.4",
+    "querystring": "^0.2.0"
+  },
   "devDependencies": {
     "@now/node": "^1.6.1",
+    "@types/micro": "^7.3.3",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.9",
     "earljs": "^0.0.11",
