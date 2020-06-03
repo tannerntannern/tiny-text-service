@@ -22,6 +22,7 @@ export const slackHandler = (type: keyof typeof charSets) =>
 
     const body = {
       text: convertedText,
+      response_type: 'in_channel',
     };
 
     const response = await axios.post(payload.response_url, body, { headers });
