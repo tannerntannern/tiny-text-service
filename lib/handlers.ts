@@ -29,6 +29,7 @@ export const slackHandler = (type: keyof typeof charSets) =>
       as_user: true,
     };
 
+    console.log(`Posting "${convertedText}" to slack...`)
     await axios.post('https://slack.com/api/chat.postMessage', body, { headers })
 
     res.status(200).send('');
