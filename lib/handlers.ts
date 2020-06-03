@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import convert, { charSets } from './convert';
 
+const slackApiBaseUrl = process.env.SLACK_API_BASE_URL as string;
 const slackBotUserOauthToken = process.env.SLACK_BOT_USER_OAUTH_TOKEN as string;
 
 export const handler = (type: keyof typeof charSets) =>
@@ -28,15 +29,15 @@ export const slackHandler = (type: keyof typeof charSets) =>
       text: convertedText,
     };
 
-    const response = await axios.post<PostMessageResponse>('https://slack.com/api/chat.postMessage', body, { headers });
+    const response = await axios.post<PostMessageResponse>(`${slackApiBaseUrl}/chat.postMessage`, body, { headers });
     if (!response.data.ok) {
       console.log(JSON.stringify(response.data));
-      res.status(500).json({
+      res.json({
         response_type: 'ephemeral',
         text: response.data.error,
       });
     } else {
-      res.status(200).send('');
+      res.send('');
     }
   }
 
