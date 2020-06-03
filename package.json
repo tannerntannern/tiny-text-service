@@ -7,7 +7,6 @@
     "test": "mocha"
   },
   "dependencies": {
-    "axios": "^0.19.2",
     "micro": "^9.3.4",
     "querystring": "^0.2.0"
   },
