@@ -1,6 +1,7 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { text } from 'micro';
 import { parse } from 'querystring';
+import axios from 'axios';
 
 import convert, { charSets } from './convert';
 
@@ -15,12 +16,24 @@ export const slackHandler = (type: keyof typeof charSets) =>
     const payload = parse(await text(req)) as SlashCommandPayload;
     const convertedText = convert(payload.text as string, type);
 
-    console.log(payload.response_url.slice(0, 16));
+    const headers = {
+      'Content-Type': 'application/json',
+    };
 
-    res.json({
-      response_type: 'in_channel',
+    const body = {
       text: convertedText,
-    })
+    };
+
+    const response = await axios.post(payload.response_url, body, { headers });
+    if (response.status !== 200) {
+      console.log(JSON.stringify(response.data));
+      res.json({
+        response_type: 'ephemeral',
+        text: 'Oops, we failed to process that command.',
+      });
+    } else {
+      res.send('');
+    }
   }
 
 // https://api.slack.com/interactivity/slash-commands#app_command_handling
